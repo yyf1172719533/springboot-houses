@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.timain.house.mapper.AgencyMapper">
+
+    <sql id="agencyField">
+          id ,
+		  name,
+		  address,
+		  phone,
+		  email,
+		  about_us,
+		  mobile,
+		  web_site
+   </sql>
+    <insert id="insertAgency">
+        insert into agency (name, address, phone, email, about_us, mobile, web_site)
+        values (#{name},#{address},#{phone},#{email},#{aboutUs},#{mobile},#{webSite})
+    </insert>
+
+    <select id="selectAgency" resultType="com.timain.house.pojo.Agency">
+        select <include refid="agencyField" />
+        from agency
+        <where>
+            <if test="null!=id and 0!=id">
+                id=#{id}
+            </if>
+            <if test="null!=name and ''!=name">
+                and email=#{email}
+            </if>
+        </where>
+    </select>
+
+    <sql id="agentField">
+        id,
+        name,
+        phone,
+        email,
+        aboutme,
+        passwd,
+        avatar,
+        type,
+        create_time,
+        enable,
+        agency_id
+    </sql>
+
+    <select id="selectAllAgency" resultType="com.timain.house.pojo.User">
+        select <include refid="agentField" />
+        from user
+        <where>
+            enable = 1 and type = 2
+            <if test="null!=id and 0!=id">
+                and id=#{id}
+            </if>
+            <if test="null!=name and ''!=name">
+                and email=#{email}
+            </if>
+        </where>
+        order by id desc
+        <if test="null!=offset and null!=limit">
+            limit #{offset},#{limit}
+        </if>
+        <if test="null==offset and null!=limit">
+            limit #{limit}
+        </if>
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Long">
+        select count(*)
+        from user
+        <where>
+            enable = 1 and type =2
+            <if test="null!=id and 0!=id">
+                and id=#{id}
+            </if>
+            <if test="null!=name and ''!=name">
+                and email=#{email}
+            </if>
+        </where>
+    </select>
+</mapper>

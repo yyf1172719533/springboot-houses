@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.timain.house.mapper.HouseUserMapper">
+
+    <insert id="insertHU">
+        insert into house_user (house_id, user_id, create_time, type)
+        values (#{houseId},#{userId},#{createTime},#{type})
+    </insert>
+
+    <delete id="deleteHouseUser">
+        delete from house_user
+        where house_id=#{houseId} and user_id=#{userId} and type=#{type}
+    </delete>
+
+    <select id="findOne" resultType="com.timain.house.pojo.HouseUser">
+        select id,house_id,user_id,create_time,type
+        from house_user
+        where house_id=#{houseId} and user_id=#{userId} and type=#{type}
+    </select>
+
+    <select id="selectSaleHouseUser" resultType="com.timain.house.pojo.HouseUser">
+        select id,house_id,user_id,create_time,type
+        from house_user
+        where house_id=#{houseId} and type=1
+        limit 1
+    </select>
+</mapper>

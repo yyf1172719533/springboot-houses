@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.timain.house.mapper.UserMapper">
+    <insert id="insertUser">
+        insert into user (name, phone, email, aboutme, passwd, avatar, type, create_time, enable)
+        values (#{name}, #{phone}, #{email}, #{aboutMe}, #{passWd}, #{avatar}, #{type}, #{createTime}, #{enable})
+    </insert>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="null!=phone and ''!=phone">
+                phone=#{phone},
+            </if>
+            <if test="null!=name and ''!=name">
+                name=#{name},
+            </if>
+            <if test="null!=passWd and ''!=passWd">
+                passwd=#{passWd},
+            </if>
+            <if test="null!=aboutMe and ''!=aboutMe">
+                aboutme=#{aboutMe},
+            </if>
+            <if test="null!=enable">
+                enable=#{enable}
+            </if>
+        </set>
+        where email=#{email}
+    </update>
+
+    <delete id="deleteUser">
+        delete from user where email=#{email}
+    </delete>
+
+    <select id="selectUsers" resultType="com.timain.house.pojo.User">
+        select * from user;
+    </select>
+
+    <select id="selectBySome" resultType="com.timain.house.pojo.User">
+        select * from user
+        <where>
+            <if test="null!=id">
+                and id=#{id}
+            </if>
+            <if test="null!=email">
+                and email=#{email}
+            </if>
+            <if test="null!=passWd">
+                and passwd=#{passWd}
+            </if>
+            <if test="null!=enable">
+                and enable=#{enable}
+            </if>
+            <if test="null!=type and 0!=type">
+                and type=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserById" resultType="com.timain.house.pojo.User">
+        select * from user
+        where id=#{id}
+    </select>
+</mapper>
